@@ -12,6 +12,7 @@ const myWidget = (
   generateSignatureUrl,
   onSuccess,
   onFailure,
+  onEnd,
   logging,
   customPublicId,
   eager,
@@ -70,6 +71,9 @@ const myWidget = (
         })
       },
       (error, result) => {
+        if (!error && result && result.event === 'queues-end') {
+          !!onEnd && onEnd(result)
+        }
         if (!error && result && result.event === 'success') {
           logging && console.log('Done! Here is the image info: ', result.info)
           logging && console.log(result)
